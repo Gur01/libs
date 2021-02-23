@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Layout, PageHeader } from 'antd';
+import 'antd/dist/antd.css';
+import { useState } from 'react';
+import {
+    BrowserRouter as Router,
+    Route, Switch
+} from "react-router-dom";
+import styled from 'styled-components';
+import List from './pages/List';
+import ListByRegion from './pages/ListByRegion';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const { Content } = Layout;
+
+const App = () => {
+    const [title, seTitle] = useState("");
+
+    return (
+        <StyledLayout>
+            <PageHeader title={`Найди библиотеку ${title? "в " + title: ''}` }/>
+            <StyledContent>
+                <Router>
+                    <Switch>
+                        <Route exact path="/">
+                            <List />
+                        </Route>
+                        <Route path="/list-by-region/:id">
+                            <ListByRegion setTitle={seTitle}/>
+                        </Route>
+                    </Switch>
+                </Router>
+            </StyledContent>
+        </StyledLayout>
+    );
+};
+
+const StyledLayout = styled(Layout)`
+    display: flex;
+    height: 100vh;
+`;
+
+const StyledContent = styled(Content)`
+    flex-grow: 1;
+`;
 
 export default App;
